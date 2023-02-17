@@ -1717,7 +1717,7 @@ flashsearch.searchResultsTemplates = {
 <div v-if="isGrowaveWishlist" :class="'ssw-faveiticon' + ' sswfaveicon' + product.id + ' fs-wishlist fs-wishlist-growave' + ' fs-wishlist-shape-' + shape">
   <i v-bind="growave.attrs" class="ssw-icon-heart-o ssw-fave-icon ssw-wishlist-element ssw-not-synch"></i>
   <span class="faves-count">...</span>
-</div> 
+</div>
 <!-- Wishlist plus -->
 <button v-if="isWishlistPlus" :class="'swym-button swym-add-to-wishlist-view-product' + ' fs-wishlist fs-wishlist-wishlistplus' + ' fs-wishlist-shape-' + shape" data-swaction="addToWishlist"  :data-product-id="product.id"></button>
 <!-- Wishlist Hero -->
@@ -1734,12 +1734,14 @@ flashsearch.searchResultsTemplates = {
   :visible="true"
   @cancel="closeQuickView"
   :footer="null"
+  centered
+  width="1000px"
 >
-  <fs-row>
+  <fs-row id="fs-quick-view-row">
     <fs-col
-      :xl="12"
-      :lg="12"
-      :md="12"
+      :xl="14"
+      :lg="14"
+      :md="14"
       :sm="24"
       :xs="24"
       class="fs-quickview-thumbs"
@@ -1757,7 +1759,7 @@ flashsearch.searchResultsTemplates = {
         :enable-new-label="enableNewLabel"
         :shape="productLabelShape"
       />
-      <fs-carousel arrows dot-position="bottom" ref="caroRef">
+      <fs-carousel arrows dot-position="bottom" ref="caroRef" :before-change="handleCarouselChange" effect="fade">
         <template #prevArrow>
           <div
             class="fs-quickview__slick-arrow fs-quickview__slick-arrow-prev"
@@ -1766,24 +1768,22 @@ flashsearch.searchResultsTemplates = {
         <template #nextArrow>
           <div class="fs-quickview__slick-arrow fs-quickview__slick-arrow-next"/>
         </template>
-        <div v-for="(image, index) in product.images" :key="index">
-          <div class="fs-quickview-thumbs-item-wrapper">
+        <div v-for="(image, index) in product.images" :key="index" class="fs-carousel-slider">
           <fs-lazy-bg-img
             class="fs-quickview-thumbs-item"
             :style="{'background-repeat': 'no-repeat', 'padding-top': isAspectRatioAdaptToImage ? ((image.width/image.height) ? (1/(image.width/image.height))*100 + '%' : undefined) : undefined }"
             :src="image.originalSrc"
           />
-          </div>
         </div>
       </fs-carousel>
     </fs-col>
     <fs-col
-      :xl="12"
-      :lg="12"
-      :md="12"
+      :xl="10"
+      :lg="10"
+      :md="10"
       :sm="24"
       :xs="24"
-      class="fs-quickview-product-details-wrapper"
+      class="fs-quickview-product-details-wrapper fs-quickview__col-2"
     >
       <div
         class="fs-quickview-product-details"
@@ -1812,8 +1812,11 @@ flashsearch.searchResultsTemplates = {
           :enable-compare-at-price="enableCompareAtPrice"
           data-testid-prefix="sr-qv"
         />
+        <!-- Vendor -->
         <div v-if="enableVendor" class="fs-quickview__vendor" data-testid="sr-qv-product-vendor">{{product.vendor}}</div>
+        <!-- Product description -->
         <div v-if="enableDescription" class="fs-quickview__description fs-ellipsis-text" v-html="product.description" data-testid="sr-qv-product-description"/>
+        <!-- Form: quality, add to cart button, wishlist button -->
         <fs-form
           v-if="product.availableForSale"
           class="fs-quickview__form"
@@ -1822,6 +1825,7 @@ flashsearch.searchResultsTemplates = {
           :model="formState"
           @finish="doSubmit"
         >
+          <!-- Product options -->
           <fs-form-item
             v-for="(option, index) in productOptions"
             :key="index"
@@ -1841,22 +1845,24 @@ flashsearch.searchResultsTemplates = {
             </fs-select>
           </fs-form-item>
           <div class="fs-quickview__buttons">
+            <!-- Quality -->
             <fs-form-item v-if="isCurrentVariantAvailable && currentVariant.availableForSale" name="quantity" :label="$t('searchResults.quickView.quantity')">
-              <fs-input-number
+              <fs-input-number-custom
                 size="large"
                 :min="1"
-                v-model:value="formState.quantity"
-                class="fs-quickview__quantity"
+                v-model="formState.quantity"
               />
             </fs-form-item>
+            <!-- Add to cart button -->
             <fs-form-item>
               <fs-button
                 v-if="isCurrentVariantAvailable && currentVariant.availableForSale"
-                class="fs-quickview__add-to-cart-btn"
+                class="fs-quickview__add-to-cart-btn fs-shaking-btn"
                 html-type="submit"
                 size="large"
                 :loading="qvSubmitLoading"
                 data-testid="sr-qv-atc-btn"
+                id="fs-quickview-add-to-cart-btn"
               >
                 {{$t("searchResults.quickView.addToCart")}}
               </fs-button>
@@ -1879,11 +1885,13 @@ flashsearch.searchResultsTemplates = {
                 {{$t("searchResults.quickView.unavailable")}}
               </fs-button>
             </fs-form-item>
+            <!-- Wishlist button -->
             <fs-form-item>
               <fs-wishlist shape="button" :product="product" :current-variant="currentVariant"/>
             </fs-form-item>
           </div>
         </fs-form>
+        <!-- Soldout button and wishlist button -->
         <div class="fs-quickview__soldout-wrapper" v-else>
           <fs-button
             size="large"
@@ -2427,6 +2435,26 @@ flashsearch.searchResultsTemplates = {
   "fs-skeleton-product-text": `
 <fs-custom-skeleton class="fs-skeleton-product-text" />
   `,
+
+"fs-input-number-custom": `
+  <fs-input
+    defaultValue="0"
+    :size="size"
+    :value="modelValue"
+    @input="updateValue"
+    class="fs-input-number-custom"
+  >
+    <template #prefix>
+      <fs-minus-outlined
+        @click="handleClickMinus"
+        :class="canClickMinus ? 'clickable' : 'non-clickable'"
+      />
+    </template>
+    <template #suffix>
+      <fs-plus-outlined @click="handleClickPlus" />
+    </template>
+  </fs-input>
+`
 };
 
 flashsearch.instantSearchTemplates = {

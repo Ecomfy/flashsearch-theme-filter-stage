@@ -1737,9 +1737,9 @@ flashsearch.searchResultsTemplates = {
 >
   <fs-row>
     <fs-col
-      :xl="12"
-      :lg="12"
-      :md="12"
+      :xl="14"
+      :lg="14"
+      :md="14"
       :sm="24"
       :xs="24"
       class="fs-quickview-thumbs"
@@ -1778,9 +1778,9 @@ flashsearch.searchResultsTemplates = {
       </fs-carousel>
     </fs-col>
     <fs-col
-      :xl="12"
-      :lg="12"
-      :md="12"
+      :xl="10"
+      :lg="10"
+      :md="10"
       :sm="24"
       :xs="24"
       class="fs-quickview-product-details-wrapper"
@@ -1842,12 +1842,11 @@ flashsearch.searchResultsTemplates = {
           </fs-form-item>
           <div class="fs-quickview__buttons">
             <fs-form-item v-if="isCurrentVariantAvailable && currentVariant.availableForSale" name="quantity" :label="$t('searchResults.quickView.quantity')">
-              <fs-input-number
-                size="large"
-                :min="1"
-                v-model:value="formState.quantity"
-                class="fs-quickview__quantity"
-              />
+            <fs-input-number-custom
+              size="large"
+              :min="1"
+              v-model="formState.quantity"
+            />
             </fs-form-item>
             <fs-form-item>
               <fs-button
@@ -2427,6 +2426,27 @@ flashsearch.searchResultsTemplates = {
   "fs-skeleton-product-text": `
 <fs-custom-skeleton class="fs-skeleton-product-text" />
   `,
+
+  "fs-input-number-custom": `
+<fs-input
+  defaultValue="0"
+  :size="size"
+  :value="modelValue"
+  @input="updateValue"
+  class="fs-input-number-custom"
+>
+  <template #prefix>
+    <fs-minus-outlined
+      @click="handleClickMinus"
+      :class="canClickMinus ? 'clickable' : 'non-clickable'"
+    />
+  </template>
+  <template #suffix>
+    <fs-plus-outlined @click="handleClickPlus" />
+  </template>
+</fs-input>
+`
+
 };
 
 flashsearch.instantSearchTemplates = {

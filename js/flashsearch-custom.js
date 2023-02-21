@@ -1717,7 +1717,7 @@ flashsearch.searchResultsTemplates = {
 <div v-if="isGrowaveWishlist" :class="'ssw-faveiticon' + ' sswfaveicon' + product.id + ' fs-wishlist fs-wishlist-growave' + ' fs-wishlist-shape-' + shape">
   <i v-bind="growave.attrs" class="ssw-icon-heart-o ssw-fave-icon ssw-wishlist-element ssw-not-synch"></i>
   <span class="faves-count">...</span>
-</div> 
+</div>
 <!-- Wishlist plus -->
 <button v-if="isWishlistPlus" :class="'swym-button swym-add-to-wishlist-view-product' + ' fs-wishlist fs-wishlist-wishlistplus' + ' fs-wishlist-shape-' + shape" data-swaction="addToWishlist"  :data-product-id="product.id"></button>
 <!-- Wishlist Hero -->
@@ -1757,7 +1757,7 @@ flashsearch.searchResultsTemplates = {
         :enable-new-label="enableNewLabel"
         :shape="productLabelShape"
       />
-      <fs-carousel arrows dot-position="bottom" ref="caroRef">
+      <fs-carousel arrows dot-position="bottom" ref="caroRef" effect="fade" :before-change="handleCarouselChange">
         <template #prevArrow>
           <div
             class="fs-quickview__slick-arrow fs-quickview__slick-arrow-prev"

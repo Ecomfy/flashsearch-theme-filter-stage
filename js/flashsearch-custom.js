@@ -1894,6 +1894,10 @@ flashsearch.searchResultsTemplates = {
           </fs-button>
           <fs-wishlist shape="button" :product="product" :current-variant="currentVariant"/>
         </div>
+        <!-- View full detail button -->
+        <div class="fs-quickview__view-full-details">
+          <a :href="getProductVariantUrl()">View full details<fs-arrow-right-outlined /></a>
+        </div>
       </div>
     </fs-col>
   </fs-row>

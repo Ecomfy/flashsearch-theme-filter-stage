@@ -2018,11 +2018,7 @@ flashsearch.searchResultsTemplates = {
        :swatch-style="productColorSwatchStyle"
        :color-variant-names="productColorOptionNames"
        :enable-show-more="productColorShowMoreEnable"
-       :show-more-limit="
-          productColorShowMoreLimit === 0
-            ? numberOfProductColors
-            : productColorShowMoreLimit
-        "
+       :show-more-limit="productColorShowMoreLimit"
        :show-more-action="productColorShowMoreAction"
       />
     </div>
@@ -2156,11 +2152,7 @@ flashsearch.searchResultsTemplates = {
             :swatch-style="productColorSwatchStyle"
             :color-variant-names="productColorOptionNames"
             :enable-show-more="productColorShowMoreEnable"
-            :show-more-limit="
-              productColorShowMoreLimit === 0
-                ? numberOfProductColors
-                : productColorShowMoreLimit
-            "
+            :show-more-limit="productColorShowMoreLimit"
             :show-more-action="productColorShowMoreAction"
          />
         </div>

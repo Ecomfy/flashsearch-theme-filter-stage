@@ -1617,7 +1617,7 @@ flashsearch.searchResultsTemplates = {
     {{$t("general.productLabel.new")}}
   </span>
   <span
-    v-if="availableForSale && onSale && enableSaleLabel"
+    v-if="availableForSale && onSale && enableSaleLabel && salePercentage"
     :class="'fs-label fs-label--onSale' + ' ' + 'fs-' + shape"
     :data-testid="saleDataTestid"
   >

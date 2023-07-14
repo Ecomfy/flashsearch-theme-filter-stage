@@ -2005,6 +2005,7 @@ flashsearch.searchResultsTemplates = {
         :price-min="product.priceMin"
         :price-max="product.priceMax"
         :compare-at-price-min="product.compareAtPriceMin"
+        :compare-at-price-max="product.compareAtPriceMax"
         :enable-compare-at-price="enableCompareAtPrice"
         data-testid-prefix="sr"
       />

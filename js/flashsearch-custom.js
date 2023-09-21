@@ -2008,6 +2008,7 @@ flashsearch.searchResultsTemplates = {
         :compare-at-price-max="product.compareAtPriceMax"
         :enable-compare-at-price="enableCompareAtPrice"
         data-testid-prefix="sr"
+        :product="product"
       />
       <!-- product color -->
       <fs-product-colors

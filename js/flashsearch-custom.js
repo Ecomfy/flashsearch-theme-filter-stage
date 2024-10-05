@@ -2416,6 +2416,7 @@ flashsearch.searchResultsTemplates = {
     class="fs-load-more-paging"
     data-testid="sr-pa-infinite-loading"
   >
+    <div style="display: none">Infinity pagination</div>
     <fs-spin v-if="isLoadMoreFetching" size="large" :indicator="indicator" />
   </div>
   </div>
@@ -2866,7 +2867,7 @@ Examples:
     <img>{{getImageSize(product.url)}}</img>
  */
 
-flashsearch.event.on("initSearchResults", function (app) {
+flashsearch.event.on("initSearchResults", function(app) {
   /*
   You can create a component and using it on search results templates.
   Examples:
@@ -2884,7 +2885,7 @@ flashsearch.event.on("initSearchResults", function (app) {
    */
 });
 
-flashsearch.event.on("initInstantSearch", function (app) {
+flashsearch.event.on("initInstantSearch", function(app) {
   /*
   You can create a component and using it on Instant search templates.
   Examples:
